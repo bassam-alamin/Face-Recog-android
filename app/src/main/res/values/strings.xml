@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Students Recognition android</string>
+    <string name="welcome">Welcome to our Recognizer</string>
+    <string name="login">Login</string>
+    <string name="username">username</string>
+    <string name="password">password</string>
+</resources>
