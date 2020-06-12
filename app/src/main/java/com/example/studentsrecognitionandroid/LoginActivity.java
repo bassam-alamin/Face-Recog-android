@@ -2,6 +2,7 @@ package com.example.studentsrecognitionandroid;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -55,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void loginUser(){
         username = findViewById(R.id.username);
-        String usern = username.getText().toString();
+        final String usern = username.getText().toString();
         password = findViewById(R.id.password);
 
         String pass = password.getText().toString();
@@ -69,6 +70,13 @@ public class LoginActivity extends AppCompatActivity {
         call.enqueue(new Callback<Users>() {
             @Override
             public void onResponse(Call<Users> call, Response<Users> response) {
+                if (response.isSuccessful()){
+
+                    Intent intent = new Intent(LoginActivity.this,WelcomeLecture.class);
+                    intent.putExtra("username",usern);
+                    startActivity(intent);
+
+                }
 
             }
 
