@@ -20,6 +20,8 @@ public interface JsonPlaceHolder {
     @GET("user/{id}")
     Call<Users> getUser(@Path("id") int id);
 
+    @GET("users/{username}")
+    Call<Users> getLoggedUser(@Path("username") String username);
 
     @POST("login/")
     Call<Users> loginUser(@Body Users users);
