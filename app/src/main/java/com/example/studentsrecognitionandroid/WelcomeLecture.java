@@ -4,7 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +25,9 @@ public class WelcomeLecture extends AppCompatActivity implements NavigationView.
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
     NavigationView navigationView;
+
+    FragmentManager fragmentManager;
+    FragmentTransaction fragmentTransaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +51,14 @@ public class WelcomeLecture extends AppCompatActivity implements NavigationView.
 //        welcome.setText(value+"Welcome home");
 
 
+        //start of setting up the navigation drawer
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawerLayout = findViewById(R.id.drawer);
         NavigationView navigationView = findViewById(R.id.navigationview);
+
+        navigationView.setNavigationItemSelectedListener(this);
 
 
         actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.open,R.string.close);
@@ -57,22 +67,47 @@ public class WelcomeLecture extends AppCompatActivity implements NavigationView.
         actionBarDrawerToggle.syncState();
 
 
+        //end of setting the navigation drawer
+
+
+        //the following is the beginning of setting the default fragment to be loaded when this activity is loaded
+
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction =fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.frame_container,new MainFragment());
+        fragmentTransaction.commit();
+
+
+
 
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
+        drawerLayout.closeDrawer(GravityCompat.START);
+
         if(menuItem.getItemId() == R.id.home){
+            fragmentManager = getSupportFragmentManager();
+            fragmentTransaction =fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.frame_container,new MainFragment());
+            fragmentTransaction.commit();
 
         }
 
-
         if(menuItem.getItemId() == R.id.Supervise){
+            fragmentManager = getSupportFragmentManager();
+            fragmentTransaction =fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.frame_container,new ChooseUnit());
+            fragmentTransaction.commit();
 
         }
 
         if(menuItem.getItemId() == R.id.reports){
+            fragmentManager = getSupportFragmentManager();
+            fragmentTransaction =fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.frame_container,new Reports());
+            fragmentTransaction.commit();
 
         }
 
