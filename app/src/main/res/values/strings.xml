@@ -4,4 +4,12 @@
     <string name="login">Login</string>
     <string name="username">username</string>
     <string name="password">password</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
+    <string name="home">Home</string>
+    <string name="supervise">Supervise</string>
+    <string name="generate_reports">Generate Reports</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
