@@ -26,16 +26,16 @@ public class ChooseUnit extends Fragment {
         View view = inflater.inflate(R.layout.fragment_choose_unit,container,false);
 
         spinner = view.findViewById(R.id.spinner);
-        List<String> units = new ArrayList<>();
-        units.add(0,"choose Units");
-        units.add(1,"computer science");
-        units.add(2,"Biochemistry");
-        units.add(3,"Acturial Science");
-        units.add(4,"Agribusiness management");
+        List<Unit> units = new ArrayList<>();
+        units.add(new Unit(0,"choose unit"));
+        units.add(new Unit(32,"Computer science"));
+        units.add(new Unit(23,"Biochemistry"));
+        units.add(new Unit(1,"Acturial science"));
+        units.add(new Unit(34,"Agribusiness Management"));
 
-        ArrayAdapter<String> arrayAdapter;
+        ArrayAdapter<Unit> arrayAdapter;
 
-        arrayAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_spinner_item,units);
+        arrayAdapter = new ArrayAdapter<>(this.getContext(),android.R.layout.simple_spinner_item,units);
 
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(arrayAdapter);
@@ -43,17 +43,19 @@ public class ChooseUnit extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (parent.getItemAtPosition(position).equals("choose Units")){
+                Unit unit = (Unit) parent.getSelectedItem();
+
+
+                if (unit.getUnit_title().equals("choose unit")){
 
                     // Do nothing
                 }
 
                 else{
 
-                    String item = parent.getItemAtPosition(position).toString();
+//                    String item = parent.getItemAtPosition(position).toString();
 
-
-                    Toast.makeText(parent.getContext(),"You selected "+position,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(parent.getContext(),"You selected "+unit.getId(),Toast.LENGTH_SHORT).show();
 
                 }
             }
