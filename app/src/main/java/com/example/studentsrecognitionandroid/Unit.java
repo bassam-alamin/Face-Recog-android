@@ -1,20 +1,20 @@
 package com.example.studentsrecognitionandroid;
 
 public class Unit {
-    private int id;
+    private Integer id;
     private String unit_title;
     private int unit_lecturer;
 
-    public Unit(int id, String unit_title) {
+    public Integer getId() {
+        return id;
+    }
+
+    public Unit(Integer id, String unit_title) {
         this.id = id;
         this.unit_title = unit_title;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
