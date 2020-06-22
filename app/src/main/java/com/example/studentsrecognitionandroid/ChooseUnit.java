@@ -1,12 +1,14 @@
 package com.example.studentsrecognitionandroid;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -37,6 +39,7 @@ public class ChooseUnit extends Fragment {
         spinner = view.findViewById(R.id.spinner);
 
 
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:8000/api/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -46,8 +49,9 @@ public class ChooseUnit extends Fragment {
         jsonPlaceHolder = retrofit.create(JsonPlaceHolder.class);
 
 
-
         Call<List<Unit>> call = jsonPlaceHolder.getUnits();
+
+
 
 
         call.enqueue(new Callback<List<Unit>>() {
@@ -57,8 +61,6 @@ public class ChooseUnit extends Fragment {
                 if (!response.isSuccessful()){
 
                 }
-
-
 
                 List<Unit> units = response.body();
                 ArrayAdapter<Unit> arrayAdapter;
@@ -106,48 +108,22 @@ public class ChooseUnit extends Fragment {
         });
 
 
-//        List<Unit> units = new ArrayList<>();
-//        units.add(new Unit(0,"choose unit"));
-//        units.add(new Unit(32,"Computer science"));
-//        units.add(new Unit(23,"Biochemistry"));
-//        units.add(new Unit(1,"Acturial science"));
-//        units.add(new Unit(34,"Agribusiness Management"));
+        Button btn = view.findViewById(R.id.proceed_button);
 
-//        ArrayAdapter<Unit> arrayAdapter;
-//
-//        arrayAdapter = new ArrayAdapter<>(this.getContext(),android.R.layout.simple_spinner_item,units);
-//
-//        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinner.setAdapter(arrayAdapter);
-//
-//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                Unit unit = (Unit) parent.getSelectedItem();
-//
-//
-//                if (unit.getUnit_title().equals("choose unit")){
-//
-//                    // Do nothing
-//                }
-//
-//                else{
-//
-////                    String item = parent.getItemAtPosition(position).toString();
-//
-//                    Toast.makeText(parent.getContext(),"You selected "+unit.getId(),Toast.LENGTH_SHORT).show();
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
-
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                opencamera();
+            }
+        });
 
         return view;
 
     }
+    public void opencamera(){
+
+                    Intent intent = new Intent(getActivity(),Camera.class);
+                    startActivity(intent);
+
+}
 }

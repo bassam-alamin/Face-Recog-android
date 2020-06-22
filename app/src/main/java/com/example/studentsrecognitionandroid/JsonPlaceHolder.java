@@ -15,7 +15,6 @@ import retrofit2.http.Query;
 
 public interface JsonPlaceHolder {
 
-
     //get a single user ,single meaning an java object
     @GET("user/{id}")
     Call<Users> getUser(@Path("id") int id);
@@ -26,16 +25,11 @@ public interface JsonPlaceHolder {
     @POST("login/")
     Call<Users> loginUser(@Body Users users);
 
-
     @GET("units")
     Call<List<Unit>> getUnits();
 
 //    @POST("departments/")
 //    Call<Department> createDepartment(@Body Department department);
-
-
-
-
 
 
 }
