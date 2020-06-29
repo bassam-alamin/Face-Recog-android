@@ -124,7 +124,7 @@ public class ChooseUnit extends Fragment {
     }
     public void opencamera(){
 
-                    Intent intent = new Intent(getActivity(),Camera.class);
+                    Intent intent = new Intent(getActivity(),Camera2.class);
                     startActivity(intent);
 
 }
