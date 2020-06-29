@@ -41,7 +41,9 @@ public class ChooseUnit extends Fragment {
 
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8000/api/")
+            //this is for local host when url is 127.0.0.0
+            //  .baseUrl("http://10.0.2.2:8000/api/")
+                .baseUrl("http://192.168.0.17:8000/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
