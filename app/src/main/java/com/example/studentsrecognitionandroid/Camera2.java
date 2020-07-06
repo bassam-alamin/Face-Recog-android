@@ -13,6 +13,7 @@ import androidx.camera.view.PreviewView;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -51,9 +52,6 @@ public class Camera2 extends AppCompatActivity {
 
     private ExecutorService cameraExecutor;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,20 +84,6 @@ public class Camera2 extends AppCompatActivity {
                 imageCapture =new ImageCapture.Builder()
                         .build();
 
-//                ImageAnalysis imageAnalysis =
-//                        new ImageAnalysis.Builder()
-//                                .setTargetResolution(new Size(1280, 720))
-//                                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-//                                .build();
-
-//                imageAnalysis.setAnalyzer(cameraExecutor, new ImageAnalysis.Analyzer() {
-//                    @Override
-//                    public void analyze(@NonNull ImageProxy image) {
-//                        int rotationDegrees = image.getImageInfo().getRotationDegrees();
-//                        Log.d("It is working","Average luminosity:Bassssaaaaaaaaaaaaaaaaaaaaaam============================================");
-//
-//                    }
-//                });
 
                 cameraSelector = new CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build();
 
@@ -131,6 +115,7 @@ public class Camera2 extends AppCompatActivity {
         SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyyMMddHHmmss", Locale.US);
         File file = new File(outputDirectory, mDateFormat.format(new Date())+ ".jpg");
 
+
         ImageCapture.OutputFileOptions outputFileOptions = new ImageCapture.OutputFileOptions.Builder(file).build();
         imageCapture.takePicture(outputFileOptions, cameraExecutor, new ImageCapture.OnImageSavedCallback () {
             @Override
@@ -138,7 +123,12 @@ public class Camera2 extends AppCompatActivity {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(Camera2.this, "Image Saved successfully", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(Camera2.this,ConfirmFace.class);
+                        intent.putExtra("path",file.getAbsolutePath());
+                        startActivity(intent);
+                        finish();
+
+                        Toast.makeText(Camera2.this, file.getAbsolutePath(), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -147,7 +137,6 @@ public class Camera2 extends AppCompatActivity {
                 error.printStackTrace();
             }
         });
-
 
     }
 
@@ -159,6 +148,5 @@ public class Camera2 extends AppCompatActivity {
         }
         return app_folder_path;
     }
-
 
 }
