@@ -7,10 +7,29 @@
     tools:context=".Camera">
 
 
+
     <androidx.camera.view.PreviewView
         android:id="@+id/viewFinder"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="right"
+
+        >
+
+        <ImageView
+            android:id="@+id/imageframe"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="50dp"
+            android:background="@color/cardview_shadow_start_color"
+
+            />
+    </LinearLayout>
     <Button
         android:id="@+id/camera_capture_button"
         android:layout_width="80dp"

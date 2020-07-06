@@ -1,32 +1,62 @@
 package com.example.studentsrecognitionandroid
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import java.util.concurrent.Executors
+import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.core.Camera
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.camera.view.PreviewView
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_camera.*
-import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
-import kotlin.Unit
+import java.util.concurrent.Executors
+
 
 typealias LumaListener = (luma: Double) -> Unit
 
+
+
+
 class Camera : AppCompatActivity() {
+    private inner class LuminosityAnalyzer(private val listener: (luma: Double) -> Int) : ImageAnalysis.Analyzer {
+
+
+        private fun ByteBuffer.toByteArray(): ByteArray {
+            rewind()    // Rewind the buffer to zero
+            val data = ByteArray(remaining())
+            get(data)   // Copy the buffer into a byte array
+            return data // Return the byte array
+        }
+
+        override fun analyze(image: ImageProxy) {
+
+
+            val buffer = image.planes[0].buffer
+            val data = buffer.toByteArray()
+
+            val pixels = data.map { it.toInt() and 0xFF }
+
+
+            Log.d(TAG, "image==============================: $data")
+
+
+            val luma = pixels.average()
+
+            listener(luma)
+
+            image.close()
+        }
+    }
     private var preview: Preview? = null
     private var imageCapture: ImageCapture? = null
     private var imageAnalyzer: ImageAnalysis? = null
@@ -69,6 +99,16 @@ class Camera : AppCompatActivity() {
             imageCapture = ImageCapture.Builder()
                     .build()
 
+            imageAnalyzer = ImageAnalysis.Builder()
+                    .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                    .build()
+                    .also {
+                        it.setAnalyzer(cameraExecutor, LuminosityAnalyzer { luma ->
+                            Log.d(TAG, "Average luminosity==============================: $luma")
+                        })
+                    }
+
+
             // Select back camera
             val cameraSelector = CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
 
@@ -78,7 +118,7 @@ class Camera : AppCompatActivity() {
 
                 // Bind use cases to camera
                 camera = cameraProvider.bindToLifecycle(
-                        this, cameraSelector, preview, imageCapture)
+                        this, cameraSelector, preview, imageAnalyzer,imageCapture)
                 preview?.setSurfaceProvider(viewFinder.createSurfaceProvider(camera?.cameraInfo))
 
             } catch(exc: Exception) {
@@ -111,6 +151,7 @@ class Camera : AppCompatActivity() {
 
             override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                 val savedUri = Uri.fromFile(photoFile)
+
                 val msg = "Photo capture succeeded: $savedUri"
                 Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                 Log.d(TAG, msg)
