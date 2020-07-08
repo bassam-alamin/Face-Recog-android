@@ -1,152 +1,139 @@
 package com.example.studentsrecognitionandroid;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.camera.core.CameraSelector;
-import androidx.camera.core.ImageAnalysis;
-import androidx.camera.core.ImageCapture;
-import androidx.camera.core.ImageCaptureException;
-import androidx.camera.core.ImageProxy;
-import androidx.camera.core.Preview;
-import androidx.camera.lifecycle.ProcessCameraProvider;
-import androidx.camera.view.PreviewView;
-import androidx.core.content.ContextCompat;
-import androidx.lifecycle.LifecycleOwner;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
-import android.util.Size;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.common.util.concurrent.ListenableFuture;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-
-
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Tag;
 
 public class Camera2 extends AppCompatActivity {
 
+    private Bitmap bmp;
+    private TextView textView;
+    private String name;
 
-    private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
-    private androidx.camera.core.Camera camera;
-    private ImageCapture imageCapture;
-    private ImageAnalysis imageAnalyzer;
-    private Preview preview;
-    private CameraSelector cameraSelector;
-    private String outputDirectory;
-    private Button btn;
-
-    private ExecutorService cameraExecutor;
+    private Student student;
+    private JsonPlaceHolder jsonPlaceHolder;
+    private ImageView mimageView;
+    private static final int REQUEST_IMAGE_CAPTURE = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera2);
-        startCamera();
 
-        btn = findViewById(R.id.camera_capture_button);
+        Retrofit retrofit = new Retrofit.Builder()
+                //this is for local host when url is 127.0.0.0
+//                .baseUrl("http://10.0.2.2:8000/api/")
+                .baseUrl("http://192.168.0.17:8000/api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-        btn.setOnClickListener(new View.OnClickListener() {
+
+        jsonPlaceHolder = retrofit.create(JsonPlaceHolder.class);
+
+
+        mimageView = findViewById(R.id.imageView);
+        textView = findViewById(R.id.student_name);
+
+
+    }
+
+    private void getStudent(String imagestring) {
+        Call<Student> call = jsonPlaceHolder.getStudent(imagestring);
+
+        call.enqueue(new Callback<Student>() {
             @Override
-            public void onClick(View v) {
-                takePhoto();
+            public void onResponse(Call<Student> call, Response<Student> response) {
+                Log.d("trial","=====================================================");
+                student = response.body();
+                name = student.getReg_no();
+                Log.d("trial","====================================================="+name);
+                textView.setText(name);
+
+
+
+
+//                URL url = null;
+//                try {
+//                    url = new URL("http://192.168.0.17:8000/media/image.jpg");
+//                    bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+//                } catch (MalformedURLException e) {
+//                    e.printStackTrace();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<Student> call, Throwable t) {
+                Log.d("=====================", String.valueOf(t));
+
             }
         });
 
-        cameraExecutor = Executors.newSingleThreadExecutor();
-        outputDirectory = getOutputDirectory();
-
-    }
-
-    public void startCamera(){
-
-        cameraProviderFuture = ProcessCameraProvider.getInstance(this);
-
-        cameraProviderFuture.addListener(() -> {
-            try {
-                ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
-                preview =new Preview.Builder()
-                        .build();
-                imageCapture =new ImageCapture.Builder()
-                        .build();
-
-
-                cameraSelector = new CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build();
-
-                try {
-                    // Unbind use cases before rebinding
-                    cameraProvider.unbindAll();
-                    // Bind use cases to camera
-                    camera = cameraProvider.bindToLifecycle((LifecycleOwner)this, cameraSelector,imageCapture,preview);
-                    PreviewView previewView = findViewById(R.id.previewView);
-                    preview.setSurfaceProvider(previewView.createSurfaceProvider(camera.getCameraInfo()));
-
-                } catch(Exception e) {
-                    Log.d("Errooooor","%e");
-
-                }
-
-
-                } catch (ExecutionException | InterruptedException e) {
-                // No errors need to be handled for this Future.
-                // This should never be reached.
-            }
-        }, ContextCompat.getMainExecutor(this));
-
 
 
     }
-    public void takePhoto(){
 
-        SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyyMMddHHmmss", Locale.US);
-        File file = new File(outputDirectory, mDateFormat.format(new Date())+ ".jpg");
+    public void takePicture(View view) {
 
+        Intent imageTakeIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (imageTakeIntent.resolveActivity(getPackageManager()) !=null){
 
-        ImageCapture.OutputFileOptions outputFileOptions = new ImageCapture.OutputFileOptions.Builder(file).build();
-        imageCapture.takePicture(outputFileOptions, cameraExecutor, new ImageCapture.OnImageSavedCallback () {
-            @Override
-            public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent intent = new Intent(Camera2.this,ConfirmFace.class);
-                        intent.putExtra("path",file.getAbsolutePath());
-                        startActivity(intent);
-                        finish();
-
-                        Toast.makeText(Camera2.this, file.getAbsolutePath(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-            @Override
-            public void onError(@NonNull ImageCaptureException error) {
-                error.printStackTrace();
-            }
-        });
-
-    }
-
-    public String getOutputDirectory(){
-        String app_folder_path = "";
-        app_folder_path = Environment.getExternalStorageDirectory().toString() + "/images";
-        File dir = new File(app_folder_path);
-        if (!dir.exists() && !dir.mkdirs()) {
+            startActivityForResult(imageTakeIntent,REQUEST_IMAGE_CAPTURE);
         }
-        return app_folder_path;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+
+            String imb64 = convert(imageBitmap);
+
+            getStudent(imb64);
+
+
+
+
+//            Toast.makeText(Camera2.this,imb64,Toast.LENGTH_SHORT).show();
+            mimageView.setImageBitmap(imageBitmap);
+
+        }
+
+    }
+
+    // convert to base64
+    public String convert(Bitmap bitmap) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, outputStream);
+        return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
     }
 
 }

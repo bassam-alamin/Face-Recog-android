@@ -6,6 +6,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
@@ -28,8 +29,11 @@ public interface JsonPlaceHolder {
     @GET("units")
     Call<List<Unit>> getUnits();
 
+    @GET("students/{imagestring}")
+    Call<Student> getStudent(@Path(value = "imagestring",encoded = true) String imagestring);
+
 //    @POST("departments/")
-//    Call<Department> createDepartment(@Body Department department);
+//    Call<Department> createDepartmenofitt(@Body Department department);
 
 
 }
