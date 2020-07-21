@@ -2,6 +2,7 @@ package com.example.studentsrecognitionandroid;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +29,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ChooseUnit extends Fragment {
     private Spinner spinner;
     private JsonPlaceHolder jsonPlaceHolder;
-
+    private SharedPreferences sharedPreferences;
+    private int unitid;
 
 
     @Nullable
@@ -37,6 +39,8 @@ public class ChooseUnit extends Fragment {
         View view = inflater.inflate(R.layout.fragment_choose_unit,container,false);
 
         spinner = view.findViewById(R.id.spinner);
+
+
 
 
 
@@ -86,8 +90,9 @@ public class ChooseUnit extends Fragment {
                         else{
 
 //                    String item = parent.getItemAtPosition(position).toString();
+                            unitid = unit.getId();
 
-                            Toast.makeText(parent.getContext(),"You selected "+unit.getId(),Toast.LENGTH_SHORT).show();
+
 
                         }
                     }
@@ -124,8 +129,17 @@ public class ChooseUnit extends Fragment {
     }
     public void opencamera(){
 
-                    Intent intent = new Intent(getActivity(),Camera2.class);
-                    startActivity(intent);
+        sharedPreferences = this.getActivity().getSharedPreferences("myprefs",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("unit_id",unitid);
+        editor.apply();
+
+        Toast.makeText(getContext(),"You selected "+unitid,Toast.LENGTH_SHORT).show();
+
+
+        Intent intent = new Intent(getActivity(),Camera2.class);
+
+        startActivity(intent);
 
 }
 }

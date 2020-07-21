@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/welcome_lecturer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="183dp"
@@ -16,7 +16,7 @@
         android:layout_marginEnd="170dp"
         android:layout_marginRight="170dp"
         android:layout_marginBottom="384dp"
-        android:text="@string/home"
+        android:text=""
         android:textColor="#fff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

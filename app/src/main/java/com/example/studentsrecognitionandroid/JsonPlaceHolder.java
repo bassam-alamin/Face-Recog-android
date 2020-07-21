@@ -32,6 +32,22 @@ public interface JsonPlaceHolder {
     @GET("students/{imagestring}")
     Call<Student> getStudent(@Path(value = "imagestring",encoded = true) String imagestring);
 
+    @GET("student/booking/")
+    Call<Booking> findBooking(
+            @Query("unit_id") int unit_id,
+            @Query("student_id") int student_id
+    );
+
+    @PATCH("student/booking/{pk}")
+    Call<Booking> markAttended(@Path("pk") int pk);
+
+
+
+
+
+
+   
+
 //    @POST("departments/")
 //    Call<Department> createDepartmenofitt(@Body Department department);
 

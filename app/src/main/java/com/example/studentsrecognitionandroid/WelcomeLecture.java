@@ -28,6 +28,7 @@ public class WelcomeLecture extends AppCompatActivity implements NavigationView.
 
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
+    private TextView welcome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +47,9 @@ public class WelcomeLecture extends AppCompatActivity implements NavigationView.
 
 
 
-//        welcome = findViewById(R.id.welcome);
+//        welcome = findViewById(R.id.textView2);
 //
-//        welcome.setText(value+"Welcome home");
+//        welcome.setText("Welcome home");
 
 
         //start of setting up the navigation drawer

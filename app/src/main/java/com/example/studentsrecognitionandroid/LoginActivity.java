@@ -34,6 +34,13 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        sharedPreferences = getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+
+
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
 
         Retrofit retrofit = new Retrofit.Builder()
                 //this is for local host when url is 127.0.0.0
@@ -76,15 +83,18 @@ public class LoginActivity extends AppCompatActivity {
 
 
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.clear();
                 editor.putInt("id", id);
                 editor.putString("email",email);
+                editor.putString("username",users.getUsername());
                 editor.apply();
 
 
 
                 Toast toast = Toast.makeText(getApplicationContext(),users.getUsername(),Toast.LENGTH_SHORT);
                 toast.show();
+
+                Intent intent = new Intent(LoginActivity.this,WelcomeLecture.class);
+                startActivity(intent);
 
             }
 
@@ -160,8 +170,6 @@ public class LoginActivity extends AppCompatActivity {
 //                    });
 
 
-                    Intent intent = new Intent(LoginActivity.this,WelcomeLecture.class);
-                    startActivity(intent);
 
                 }
 

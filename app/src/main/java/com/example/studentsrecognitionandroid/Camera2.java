@@ -3,7 +3,9 @@ package com.example.studentsrecognitionandroid;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -32,16 +34,23 @@ public class Camera2 extends AppCompatActivity {
     private Bitmap bmp;
     private TextView textView;
     private String name;
+    private int id;
+    private SharedPreferences sharedPreferences;
 
     private Student student;
+    private Booking booking;
     private JsonPlaceHolder jsonPlaceHolder;
     private ImageView mimageView;
     private static final int REQUEST_IMAGE_CAPTURE = 101;
+    private int unit_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera2);
+        sharedPreferences = getSharedPreferences("myprefs", Context.MODE_PRIVATE);
+        unit_id = sharedPreferences.getInt("unit_id",0);
+
 
         Retrofit retrofit = new Retrofit.Builder()
                 //this is for local host when url is 127.0.0.0
@@ -53,10 +62,17 @@ public class Camera2 extends AppCompatActivity {
 
         jsonPlaceHolder = retrofit.create(JsonPlaceHolder.class);
 
-
         mimageView = findViewById(R.id.imageView);
         textView = findViewById(R.id.student_name);
+        textView.setText(String.valueOf(unit_id));
 
+
+        mimageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmStudent();
+            }
+        });
 
     }
 
@@ -69,22 +85,13 @@ public class Camera2 extends AppCompatActivity {
                 Log.d("trial","=====================================================");
                 student = response.body();
                 name = student.getReg_no();
-                Log.d("trial","====================================================="+name);
-                textView.setText(name);
+                id = student.getId();
 
+                Log.d("trial","====================================================="+student.getImage());
+                textView.setText(name+id);
 
-
-
-//                URL url = null;
-//                try {
-//                    url = new URL("http://192.168.0.17:8000/media/image.jpg");
-//                    bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-//                } catch (MalformedURLException e) {
-//                    e.printStackTrace();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-
+                String url = "http://192.168.0.17:8000"+student.getImage();
+                new DownloadImageTask(Camera2.this, mimageView, url).execute();
 
             }
 
@@ -94,6 +101,57 @@ public class Camera2 extends AppCompatActivity {
 
             }
         });
+
+
+    }
+    public void markAttended(int booking_id){
+        Call<Booking> call = jsonPlaceHolder.markAttended(booking_id);
+
+        call.enqueue(new Callback<Booking>() {
+            @Override
+            public void onResponse(Call<Booking> call, Response<Booking> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<Booking> call, Throwable t) {
+
+            }
+
+        });
+
+        Toast.makeText(Camera2.this,"confirmed student ",Toast.LENGTH_SHORT).show();
+
+    }
+
+    public void confirmStudent(){
+
+        Call<Booking> call = jsonPlaceHolder.findBooking(unit_id,id);
+
+        call.enqueue(new Callback<Booking>() {
+            @Override
+            public void onResponse(Call<Booking> call, Response<Booking> response) {
+                booking = response.body();
+                int bookin_id = booking.getId();
+
+                markAttended(bookin_id);
+
+
+
+
+            }
+
+            @Override
+            public void onFailure(Call<Booking> call, Throwable t) {
+
+            }
+        });
+
+
+//        Toast.makeText(Camera2.this,"You can do sth on  "+unit_id + id ,Toast.LENGTH_SHORT).show();
+
+
+
 
 
 
@@ -119,11 +177,6 @@ public class Camera2 extends AppCompatActivity {
 
             getStudent(imb64);
 
-
-
-
-//            Toast.makeText(Camera2.this,imb64,Toast.LENGTH_SHORT).show();
-            mimageView.setImageBitmap(imageBitmap);
 
         }
 
