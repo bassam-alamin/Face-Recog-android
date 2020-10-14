@@ -2,6 +2,8 @@ package com.example.studentsrecognitionandroid;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
 import android.content.Intent;
@@ -55,7 +57,7 @@ public class Camera2 extends AppCompatActivity {
         Retrofit retrofit = new Retrofit.Builder()
                 //this is for local host when url is 127.0.0.0
 //                .baseUrl("http://10.0.2.2:8000/api/")
-                .baseUrl("http://192.168.0.17:8000/api/")
+                .baseUrl("http://192.168.0.33:8000/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -90,7 +92,7 @@ public class Camera2 extends AppCompatActivity {
                 Log.d("trial","====================================================="+student.getImage());
                 textView.setText(name+id);
 
-                String url = "http://192.168.0.17:8000"+student.getImage();
+                String url = "http://192.168.0.33:8000"+student.getImage();
                 new DownloadImageTask(Camera2.this, mimageView, url).execute();
 
             }
@@ -101,7 +103,6 @@ public class Camera2 extends AppCompatActivity {
 
             }
         });
-
 
     }
     public void markAttended(int booking_id){
@@ -136,9 +137,6 @@ public class Camera2 extends AppCompatActivity {
 
                 markAttended(bookin_id);
 
-
-
-
             }
 
             @Override
@@ -164,6 +162,12 @@ public class Camera2 extends AppCompatActivity {
 
             startActivityForResult(imageTakeIntent,REQUEST_IMAGE_CAPTURE);
         }
+    }
+
+    public void open_reports(View view){
+        Intent intent = new Intent(Camera2.this,WelcomeLecture.class);
+        startActivity(intent);
+
     }
 
     @Override

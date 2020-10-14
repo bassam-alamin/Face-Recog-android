@@ -1,25 +1,212 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp"
+    >
+
+
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/report_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="159dp"
-        android:layout_marginLeft="159dp"
-        android:layout_marginTop="362dp"
-        android:layout_marginEnd="194dp"
-        android:layout_marginRight="194dp"
-        android:layout_marginBottom="350dp"
-        android:text="@string/reports"
+        android:text="Generate Reports"
         android:textColor="#fff"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:textStyle="bold"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="20dp"
+        android:textSize="15sp"
+        />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/current_unit_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Media -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+
+                >
+                <!-- Title, secondary and supporting text -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Comp 490"
+                    android:textSize="20sp"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    />
+
+            </LinearLayout>
+
+            <!-- Buttons -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:orientation="horizontal"
+                android:layout_gravity="right">
+                <Button
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:text="View List"
+                    android:background="@drawable/button"
+                    >
+
+
+                </Button>
+                <Button
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:text="Download"
+                    android:background="@drawable/button"
+                    >
+
+                </Button>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"
+        android:layout_marginTop="30dp"
+        android:background="#fff"/>
+
+    <TextView
+        android:id="@+id/others_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Other Units:"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:textSize="15sp"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <EditText
+            android:id="@+id/username"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:inputType="text"
+            android:hint="search unit"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edit"
+            android:padding="10dp"
+
+            />
+        <Button
+            android:id="@+id/loginButton"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="5dp"
+            android:text="search"
+            android:background="@drawable/button"
+            >
+
+
+        </Button>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/results"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="results:"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:textSize="15sp"
+        />
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/searched_unit_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Media -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+
+                >
+                <!-- Title, secondary and supporting text -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Comp 370"
+                    android:textSize="20sp"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    />
+
+            </LinearLayout>
+
+            <!-- Buttons -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:orientation="horizontal"
+                android:layout_gravity="right">
+                <Button
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:text="View List"
+                    android:background="@drawable/button"
+                    >
+
+
+                </Button>
+                <Button
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:text="Download"
+                    android:background="@drawable/button"
+                    >
+
+                </Button>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+
+
+
+
+</LinearLayout>
