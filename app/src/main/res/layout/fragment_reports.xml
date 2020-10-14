@@ -60,6 +60,7 @@
                 android:orientation="horizontal"
                 android:layout_gravity="right">
                 <Button
+                    android:id="@+id/view_list_button"
                     android:layout_width="100dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
