@@ -1,44 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="8dp"
     >
 
     <TextView
-        android:layout_width="300dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:text="Examination Sessions"
         android:textColor="#fff"
-        android:text="@string/choose_units"
-
+        android:textStyle="bold"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="20dp"
+        android:textSize="15sp"
         />
-
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="300dp"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="15dp"
-        android:drawablePadding="10dp"
-        android:padding="20dp"
-        android:background="@drawable/edit"
-         />
+        android:text="Choose Unit and Group"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="0dp"
+        android:textSize="13sp"
+        />
+    <View
+        android:layout_width="133dp"
+        android:layout_height="1.5dp"
+        android:layout_marginTop="0dp"
+        android:background="#fff"/>
 
-    <Button
-        android:id="@+id/proceed_button"
-        android:layout_width="200dp"
-        android:layout_height="60dp"
-        android:layout_gravity="right"
-        android:layout_marginRight="55dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/proceed"
-        android:background="@drawable/button"
-        >
 
-    </Button>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/root_layout"
+        android:orientation="vertical">
+
+
+    </LinearLayout>
+
+
+
 
 
 </LinearLayout>

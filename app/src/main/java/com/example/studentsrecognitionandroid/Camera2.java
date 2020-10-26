@@ -57,7 +57,7 @@ public class Camera2 extends AppCompatActivity {
         Retrofit retrofit = new Retrofit.Builder()
                 //this is for local host when url is 127.0.0.0
 //                .baseUrl("http://10.0.2.2:8000/api/")
-                .baseUrl("http://192.168.0.33:8000/api/")
+                .baseUrl("http://172.20.10.3:8000/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -92,7 +92,7 @@ public class Camera2 extends AppCompatActivity {
                 Log.d("trial","====================================================="+student.getImage());
                 textView.setText(name+id);
 
-                String url = "http://192.168.0.33:8000"+student.getImage();
+                String url = "http://172.20.10.3:8000"+student.getImage();
                 new DownloadImageTask(Camera2.this, mimageView, url).execute();
 
             }
@@ -132,10 +132,18 @@ public class Camera2 extends AppCompatActivity {
         call.enqueue(new Callback<Booking>() {
             @Override
             public void onResponse(Call<Booking> call, Response<Booking> response) {
-                booking = response.body();
-                int bookin_id = booking.getId();
 
-                markAttended(bookin_id);
+                if (response.code() == 200){
+                    booking = response.body();
+                    int bookin_id = booking.getId();
+
+                    markAttended(bookin_id);
+                }
+                else if (response.code() == 404){
+                    Toast.makeText(Camera2.this,"The Above Student is not for this session",Toast.LENGTH_LONG).show();
+
+                }
+
 
             }
 
@@ -147,10 +155,6 @@ public class Camera2 extends AppCompatActivity {
 
 
 //        Toast.makeText(Camera2.this,"You can do sth on  "+unit_id + id ,Toast.LENGTH_SHORT).show();
-
-
-
-
 
 
     }

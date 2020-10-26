@@ -41,6 +41,9 @@ public interface JsonPlaceHolder {
     @PATCH("student/booking/{pk}")
     Call<Booking> markAttended(@Path("pk") int pk);
 
+    @GET("exam-session/{pk}")
+    Call<List<ExaminationSession>> getExamSessions(@Path("pk") int pk);
+
 
 
 

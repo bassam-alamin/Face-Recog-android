@@ -3,7 +3,6 @@ package com.example.studentsrecognitionandroid;
 public class Unit {
     private Integer id;
     private String unit_title;
-    private int unit_lecturer;
 
     public Integer getId() {
         return id;
@@ -26,13 +25,6 @@ public class Unit {
         this.unit_title = unit_title;
     }
 
-    public int getUnit_lecturer() {
-        return unit_lecturer;
-    }
-
-    public void setUnit_lecturer(int unit_lecturer) {
-        this.unit_lecturer = unit_lecturer;
-    }
 
     //to display object as a string in spinner
     @Override

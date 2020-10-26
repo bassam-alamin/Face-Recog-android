@@ -44,6 +44,7 @@ public class Reports extends Fragment {
         return view;
 
     }
+    
 
     public void viewList(){
         PdfDocument myPdfDocument = new PdfDocument();
