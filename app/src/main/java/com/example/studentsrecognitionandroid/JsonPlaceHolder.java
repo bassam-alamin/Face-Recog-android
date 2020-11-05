@@ -20,8 +20,8 @@ public interface JsonPlaceHolder {
     @GET("user/{id}")
     Call<Users> getUser(@Path("id") int id);
 
-    @GET("users/{username}")
-    Call<Users> getLoggedUser(@Path("username") String username);
+    @GET("users/{staff_no}")
+    Call<Users> getLoggedUser(@Path("staff_no") String staff_no);
 
     @POST("login/")
     Call<Users> loginUser(@Body Users users);
@@ -34,7 +34,7 @@ public interface JsonPlaceHolder {
 
     @GET("student/booking/")
     Call<Booking> findBooking(
-            @Query("unit_id") int unit_id,
+            @Query("session_id") int session_id,
             @Query("student_id") int student_id
     );
 
@@ -44,12 +44,14 @@ public interface JsonPlaceHolder {
     @GET("exam-session/{pk}")
     Call<List<ExaminationSession>> getExamSessions(@Path("pk") int pk);
 
+//    Reports Url
+    @GET("attended/{pk}")
+    Call<List<ReportsClass>> getAttended(@Path("pk") int pk);
 
 
 
 
 
-   
 
 //    @POST("departments/")
 //    Call<Department> createDepartmenofitt(@Body Department department);

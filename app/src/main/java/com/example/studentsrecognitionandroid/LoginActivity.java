@@ -25,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     private String email;
     private Users users;
 
-    private EditText username;
+    private EditText staff_no;
     private EditText password;
     private SharedPreferences sharedPreferences;
 
@@ -35,8 +35,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         sharedPreferences = getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
-
-
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
@@ -59,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginUser();
+                getUsername();
             }
         });
 
@@ -79,7 +77,6 @@ public class LoginActivity extends AppCompatActivity {
                 email = users.getEmail();
 
                 sharedPreferences = getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
-
 
 
                 SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -103,15 +100,15 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
-    public void loginUser(){
-        username = findViewById(R.id.username);
-        final String usern = username.getText().toString();
+
+    public void loginUser(String username){
+        staff_no = findViewById(R.id.username);
+        final String usern = username;
         password = findViewById(R.id.password);
         String pass = password.getText().toString();
+        Toast.makeText(this,usern,Toast.LENGTH_LONG).show();
 
         final Users users = new Users(usern,pass);
 
@@ -124,7 +121,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.isSuccessful()){
 
 
-                    getUser(usern);
+                    getUser(staff_no.getText().toString());
 
 
 //                    Call<Users> call2 = jsonPlaceHolder.getLoggedUser(usern);
@@ -182,6 +179,27 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
+
+    }
+    public void getUsername(){
+        staff_no = findViewById(R.id.username);
+        String n = staff_no.getText().toString();
+        Call<Users> call = jsonPlaceHolder.getLoggedUser(n);
+
+        call.enqueue(new Callback<Users>() {
+            @Override
+            public void onResponse(Call<Users> call, Response<Users> response) {
+
+
+                users = response.body();
+                loginUser(users.getUsername());
+            }
+
+            @Override
+            public void onFailure(Call<Users> call, Throwable t) {
+
+            }
+        });
 
     }
 }

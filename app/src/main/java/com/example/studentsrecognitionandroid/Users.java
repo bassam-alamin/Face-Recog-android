@@ -5,6 +5,16 @@ public class Users {
     private String username;
     private String password;
     private String email;
+    private String staff_no;
+
+    public String getStaff_no() {
+        return staff_no;
+    }
+
+    public void setStaff_no(String staff_no) {
+        this.staff_no = staff_no;
+    }
+
     private Boolean is_student;
     private Boolean is_lecturer;
 

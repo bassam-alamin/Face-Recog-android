@@ -206,13 +206,11 @@ public class ChooseUnit extends Fragment {
 
 
 
-
-
     public void opencamera(int session_id){
 
         sharedPreferences = this.getActivity().getSharedPreferences("myprefs",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("sessionId",session_id);
+        editor.putInt("session_id",session_id);
         editor.apply();
 
         Toast.makeText(getContext(),"You selected "+session_id,Toast.LENGTH_SHORT).show();

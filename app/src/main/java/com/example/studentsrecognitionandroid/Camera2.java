@@ -44,14 +44,14 @@ public class Camera2 extends AppCompatActivity {
     private JsonPlaceHolder jsonPlaceHolder;
     private ImageView mimageView;
     private static final int REQUEST_IMAGE_CAPTURE = 101;
-    private int unit_id;
+    private int session_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera2);
         sharedPreferences = getSharedPreferences("myprefs", Context.MODE_PRIVATE);
-        unit_id = sharedPreferences.getInt("unit_id",0);
+        session_id = sharedPreferences.getInt("session_id",0);
 
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -66,7 +66,7 @@ public class Camera2 extends AppCompatActivity {
 
         mimageView = findViewById(R.id.imageView);
         textView = findViewById(R.id.student_name);
-        textView.setText(String.valueOf(unit_id));
+        textView.setText(String.valueOf(session_id));
 
 
         mimageView.setOnClickListener(new View.OnClickListener() {
@@ -127,7 +127,7 @@ public class Camera2 extends AppCompatActivity {
 
     public void confirmStudent(){
 
-        Call<Booking> call = jsonPlaceHolder.findBooking(unit_id,id);
+        Call<Booking> call = jsonPlaceHolder.findBooking(session_id,id);
 
         call.enqueue(new Callback<Booking>() {
             @Override
